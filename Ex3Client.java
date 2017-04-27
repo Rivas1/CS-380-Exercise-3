@@ -16,7 +16,8 @@ public final class Ex3Client
 			InputStream IS 			= socket.getInputStream();
 			InputStreamReader ISR 	= new InputStreamReader(IS, "UTF-8");
 			BufferedReader BR 		= new BufferedReader(ISR);
-			numberOfBytes 			= BR.read();
+
+			numberOfBytes = obtain(socket, IS, ISR, BR);
 			System.out.println("Reading " + numberOfBytes + " bytes.");
 
 			// If not between 0 and 255, quit.
@@ -25,10 +26,21 @@ public final class Ex3Client
 				System.out.println("Value is not between 0 and 255!\nProgram will now terminate.");
 				System.exit(0);
 			}
+
+			// 
 		}
 		catch (IOException e)
+		{ e.printStackTrace(); }
+	}
+	public static int obtain ( Socket socket, InputStream IS, InputStreamReader ISR, 
+							   BufferedReader BR ) throws IOException
+	{
+		try 
 		{
-			e.printStackTrace();
+			return BR.read();
 		}
+		catch (IOException e)
+		{ e.printStackTrace(); }
+		return BR.read();
 	}
 }
