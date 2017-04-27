@@ -7,6 +7,7 @@ public final class Ex3Client
 	{
 		// int numberOfBytes = -1; // stores number of bytes to be received [0,255]
 		int n = -1;
+		int[] bytesFromServer;
 		try
 		{
 			/* make a connection */
@@ -27,6 +28,10 @@ public final class Ex3Client
 				System.out.println("Value is not between 0 and 255!\nProgram will now terminate.");
 				System.exit(0);
 			}
+
+			/* Read corresponding number of bytes into integer array */
+			bytesFromServer = new int[n];
+			read_in_bytes(bytesFromServer, socket, IS);
 		}
 		catch (IOException e)
 		{ e.printStackTrace(); }
@@ -40,5 +45,15 @@ public final class Ex3Client
 		catch (IOException e)
 		{ e.printStackTrace(); }
 		return IS.read();
+	}
+	public static void read_in_bytes ( int[] bytesFromServer, Socket socket, InputStream IS )  throws IOException
+	{
+		try
+		{
+			for ( int i = 0; i < bytesFromServer.length; i++ )
+				bytesFromServer[i] = IS.read();
+		}
+		catch ( IOException e )
+		{ e.printStackTrace(); }
 	}
 }
