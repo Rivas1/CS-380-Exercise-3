@@ -32,6 +32,15 @@ public final class Ex3Client
 			/* Read corresponding number of bytes into integer array */
 			bytesFromServer = new int[n];
 			read_in_bytes(bytesFromServer, socket, IS);
+
+			/* Print data received */
+			System.out.print("Data received: ");
+			for ( int i = 0; i < bytesFromServer.length; i++ )
+			{
+				if ( (i % 10) == 0)
+					System.out.println();
+				System.out.print( Integer.toHexString(bytesFromServer[i]) );
+			}
 		}
 		catch (IOException e)
 		{ e.printStackTrace(); }
