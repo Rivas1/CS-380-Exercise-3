@@ -8,6 +8,8 @@ public final class Ex3Client
 		// int numberOfBytes = -1; // stores number of bytes to be received [0,255]
 		int n = -1;
 		int[] bytesFromServer;
+		short checkSum = -1;
+
 		try
 		{
 			/* make a connection */
@@ -41,6 +43,8 @@ public final class Ex3Client
 					System.out.println();
 				System.out.print( Integer.toHexString(bytesFromServer[i]) );
 			}
+			/* Calculate checksum */
+			checkSum = checksum( bytesFromServer );
 		}
 		catch (IOException e)
 		{ e.printStackTrace(); }
@@ -64,5 +68,43 @@ public final class Ex3Client
 		}
 		catch ( IOException e )
 		{ e.printStackTrace(); }
+	}
+	public static short checksum( int[] b )
+	{
+		int x = -1;
+		int sum = 0;
+		String c = "";
+		String hex = "";
+		int a = 0;
+		String left16bits = "";
+		String right16bits = "";
+
+		for ( int i = 0; i < b.length-1; i = i + 2)
+		{
+			// Concatenate 2 bytes
+			c = Integer.toString( b[i] ) + Integer.toString( b[i+1] );
+			// convert back to integer
+			x = Integer.parseInt( c );
+			// add to sum
+			sum = sum + x;
+		}
+		hex = Integer.toHexString(sum);
+
+		/* pad hexadecimal string with zeros to ensure 32 bits */
+		a = 8 - hex.length();
+		while ( a > 0 )
+		{
+			hex = "0" + hex;
+			a--;
+		}
+
+		/* Add left 16 bits to right 16 bits */
+		left16bits = hex.substring(0,4);
+		right16bits = hex.substring(4,8);
+
+
+		System.out.println("\nChecksum calculated: " + hex + ".");
+		// temporary
+		return 4;
 	}
 }
