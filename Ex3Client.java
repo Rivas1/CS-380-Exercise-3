@@ -82,6 +82,7 @@ public final class Ex3Client
 		int var1 = 0; // stores value obtained from adding left 16 bits to right 16 bits
 		String binary = "";
 		String inverted = "";
+		short checksum = 0;
 		for ( int i = 0; i < b.length-1; i = i + 2)
 		{
 			// Concatenate 2 bytes
@@ -114,10 +115,13 @@ public final class Ex3Client
 		*/
 		binary = Integer.toBinaryString(var1);
 		inverted = binary.replaceAll("0", "x").replaceAll("1", "0").replaceAll("x", "1");
-		System.out.println("\nChecksum calculated: " + hex + ".");
-		System.out.println("Binary string: " + binary);
-		System.out.println("Inverted:      " + inverted);
+
+		/*Convert to short*/
+		checksum = Short.parseShort( inverted, 2 );
+
+		System.out.println("\nChecksum calculated: " + checksum + ".");
+	
 		// temporary
-		return 4;
+		return checksum;
 	}
 }
