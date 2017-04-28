@@ -7,9 +7,10 @@ public final class Ex3Client
 	{
 		// int numberOfBytes = -1; // stores number of bytes to be received [0,255]
 		int n = -1;
+		int g = 0;
 		int[] bytesFromServer;
 		short checkSum = -1;
-
+		String cs = "";
 		try
 		{
 			/* make a connection */
@@ -19,7 +20,7 @@ public final class Ex3Client
 
 			/* create stream from Socket */
 			InputStream IS = socket.getInputStream();
-
+			PrintStream PS = new PrintStream(socket.getOutputStream()); // out from client to server
 			/* read in byte that contains number of bytes to be received */
 			n = obtain(socket, IS);
 			System.out.println("Reading " + n + " bytes."); 
@@ -43,8 +44,25 @@ public final class Ex3Client
 					System.out.println();
 				System.out.print( Integer.toHexString(bytesFromServer[i]) );
 			}
+
 			/* Calculate checksum */
 			checkSum = checksum( bytesFromServer );
+			
+			/* Convert check sum to 2 bytes with padded zeros for 16 bits */
+			cs = Integer.toHexString(checkSum & 0xffff);
+			g = (4 - cs.length() );
+			while ( g > 0 )
+			{
+				cs = "0" + cs;
+				g--;
+			}
+			
+			/* Send check sum value to server */
+			PS.println(cs);
+			if ( IS.read() == 0 )
+				System.out.println("Response is bad.");
+			else if ( IS.read() == 1 )
+				System.out.println("Response is good.");
 		}
 		catch (IOException e)
 		{ e.printStackTrace(); }
@@ -118,8 +136,8 @@ public final class Ex3Client
 
 		/*Convert to short*/
 		checksum = Short.parseShort( inverted, 2 );
-
-		System.out.println("\nChecksum calculated: " + checksum + ".");
+		String hsum = Integer.toHexString( checksum & 0xffff);
+		System.out.println("\nChecksum calculated: 0x" + hsum + ".");
 	
 		// temporary
 		return checksum;
