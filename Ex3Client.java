@@ -78,7 +78,10 @@ public final class Ex3Client
 		int a = 0;
 		String left16bits = "";
 		String right16bits = "";
-
+		int l = 0, r = 0;
+		int var1 = 0; // stores value obtained from adding left 16 bits to right 16 bits
+		String binary = "";
+		String inverted = "";
 		for ( int i = 0; i < b.length-1; i = i + 2)
 		{
 			// Concatenate 2 bytes
@@ -101,9 +104,19 @@ public final class Ex3Client
 		/* Add left 16 bits to right 16 bits */
 		left16bits = hex.substring(0,4);
 		right16bits = hex.substring(4,8);
+		l = Integer.parseInt(left16bits, 16);
+		r = Integer.parseInt(right16bits, 16);
+		var1 = l + r;
 
-
+		/* Calculate 1's complement for 1's complement sum:
+		   1. Write number as binary
+		   2. Flip all bits.
+		*/
+		binary = Integer.toBinaryString(var1);
+		inverted = binary.replaceAll("0", "x").replaceAll("1", "0").replaceAll("x", "1");
 		System.out.println("\nChecksum calculated: " + hex + ".");
+		System.out.println("Binary string: " + binary);
+		System.out.println("Inverted:      " + inverted);
 		// temporary
 		return 4;
 	}
